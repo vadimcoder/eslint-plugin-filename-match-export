@@ -58,7 +58,7 @@ import path from 'node:path';
 */
 
 /** @type {import('eslint').Rule.RuleModule} */
-const rule={
+const rule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -66,7 +66,8 @@ const rule={
         'If a file has exactly one named export, the filename must match it',
     },
     messages: {
-      mismatch             :'Filename "{{filename}}" does not match the single named export "{{exportName}}".',
+      mismatch:
+        'Filename "{{filename}}" does not match the single named export "{{exportName}}".',
     },
     schema: [],
   },
@@ -75,7 +76,7 @@ const rule={
     const namedExports = [];
 
     return {
-      ExportNamedDeclaration(node)    {
+      ExportNamedDeclaration(node) {
         if (node.declaration) {
           if (node.declaration.id) {
             // export function foo() {} / export class Foo {} /

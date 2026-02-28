@@ -95,20 +95,28 @@ app-routing.module.ts                 →  AppRoutingModule    →  AppRoutingMo
 
 ```ts
 // file: user.service.ts
-export class UserService { /* ... */ }
+export class UserService {
+  /* ... */
+}
 ```
 
 ```ts
 // file: get-user.ts
-export function getUser() { /* ... */ }
+export function getUser() {
+  /* ... */
+}
 ```
 
 **Pass** — multiple named exports (ignored):
 
 ```ts
 // file: utils.ts
-export function formatDate() { /* ... */ }
-export function formatCurrency() { /* ... */ }
+export function formatDate() {
+  /* ... */
+}
+export function formatCurrency() {
+  /* ... */
+}
 ```
 
 **Pass** — no named exports (ignored):
@@ -134,29 +142,31 @@ export { UserService } from './user.service';
 ```ts
 // file: api.service.ts
 //       ↑ normalized to "ApiService", but export is "UserService"
-export class UserService { /* ... */ }
+export class UserService {
+  /* ... */
+}
 // ✗ Filename "api.service.ts" does not match the single named export "UserService".
 ```
 
 ### Automatically skipped files
 
-| Pattern         | Reason                                  |
-|-----------------|-----------------------------------------|
-| `index.*`       | Barrel / entry point files              |
-| `*.spec.*`      | Unit test files                         |
-| `*.test.*`      | Test files                              |
-| `*.stories.*`   | Storybook story files                   |
+| Pattern       | Reason                     |
+| ------------- | -------------------------- |
+| `index.*`     | Barrel / entry point files |
+| `*.spec.*`    | Unit test files            |
+| `*.test.*`    | Test files                 |
+| `*.stories.*` | Storybook story files      |
 
 ## Comparison with other plugins
 
-|  | **This plugin** | eslint-plugin-filenames | eslint-plugin-filename-export | eslint-plugin-filenames-simple | eslint-plugin-check-file | eslint-plugin-angular-file-naming |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Matches filename to export** | Named | Default only | Named + Default | Named | No | No |
-| **Single export only** (skip multi-export files) | Yes | No | No | Yes | — | — |
-| **Angular dot-separated naming** (`*.service.ts`, `*.component.ts`) | Yes | No | No | No | No | Suffix only |
-| **ESLint 9 flat config** (native) | Yes | No | No | No | Yes (v3) | No |
-| **Maintained** | Yes | Abandoned (2018) | Personal project | Stale (2023) | Yes | Stale (2022) |
-| **Zero dependencies** | Yes | No | No | No | No | No |
+|                                                                     | **This plugin** | eslint-plugin-filenames | eslint-plugin-filename-export | eslint-plugin-filenames-simple | eslint-plugin-check-file | eslint-plugin-angular-file-naming |
+| ------------------------------------------------------------------- | :-------------: | :---------------------: | :---------------------------: | :----------------------------: | :----------------------: | :-------------------------------: |
+| **Matches filename to export**                                      |      Named      |      Default only       |        Named + Default        |             Named              |            No            |                No                 |
+| **Single export only** (skip multi-export files)                    |       Yes       |           No            |              No               |              Yes               |            —             |                 —                 |
+| **Angular dot-separated naming** (`*.service.ts`, `*.component.ts`) |       Yes       |           No            |              No               |               No               |            No            |            Suffix only            |
+| **ESLint 9 flat config** (native)                                   |       Yes       |           No            |              No               |               No               |         Yes (v3)         |                No                 |
+| **Maintained**                                                      |       Yes       |    Abandoned (2018)     |       Personal project        |          Stale (2023)          |           Yes            |           Stale (2022)            |
+| **Zero dependencies**                                               |       Yes       |           No            |              No               |               No               |            No            |                No                 |
 
 ### Why not the others?
 
@@ -220,15 +230,16 @@ export class UserService { /* ... */ }
 ## Supported export types
 
 ```ts
-export function myFunction() {}          // ✅ function declaration
-export class MyClass {}                  // ✅ class declaration
-export const myConst = 42;               // ✅ variable declaration
-export interface MyInterface {}          // ✅ TypeScript interface
-export type MyType = string;             // ✅ TypeScript type alias
-export { myThing };                      // ✅ named export specifier
-export { myThing } from './other';       // ✅ re-export
-export const a = 1, b = 2;              // ✅ counts as 2 exports (ignored)
-export default class {}                  // ✅ default exports are not counted
+export function myFunction() {} // ✅ function declaration
+export class MyClass {} // ✅ class declaration
+export const myConst = 42; // ✅ variable declaration
+export interface MyInterface {} // ✅ TypeScript interface
+export type MyType = string; // ✅ TypeScript type alias
+export { myThing }; // ✅ named export specifier
+export { myThing } from './other'; // ✅ re-export
+export const a = 1,
+  b = 2; // ✅ counts as 2 exports (ignored)
+export default class {} // ✅ default exports are not counted
 ```
 
 ## Contributing
