@@ -70,7 +70,18 @@ const rule = {
       mismatch:
         'Filename "{{filename}}" does not match the single named export "{{exportName}}".',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignore: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
 
   create(context) {
@@ -108,14 +119,18 @@ const rule = {
       'Program:exit'(programNode) {
         if (namedExports.length !== 1) return;
 
-        const exportName = namedExports[0];
+        const namedExport = namedExports[0];
+        const ignore = context.options[0]?.ignore ?? [];
+
         const filename = path.basename(context.filename);
 
-        if (!isValid(filename, exportName)) {
+        if (ignore.includes(filename)) return;
+
+        if (!isValid(filename, namedExport)) {
           context.report({
             node: programNode,
             messageId: 'mismatch',
-            data: { filename, exportName },
+            data: { filename, exportName: namedExport },
           });
         }
       },
