@@ -152,4 +152,8 @@ const rule = {
   },
 };
 
-export default rule;
+export default {
+  rules: {
+    'match-named-export': rule,
+  },
+};
