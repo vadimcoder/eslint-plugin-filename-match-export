@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { isValid } from './is-valid.js';
 
 /**
  * Custom ESLint rule: if a file has exactly one named export,
@@ -110,37 +111,7 @@ const rule = {
         const exportName = namedExports[0];
         const filename = path.basename(context.filename);
 
-        // Skip index, test, spec, and stories files
-        if (
-          /^index\./.test(filename) ||
-          /\.spec\./.test(filename) ||
-          /\.test\./.test(filename) ||
-          /\.stories\./.test(filename)
-        ) {
-          return;
-        }
-
-        // Strip .ts / .tsx / .js / .jsx extension
-        const withoutExt = filename.replace(/\.[jt]sx?$/, '');
-
-        // Split on dots (Angular convention: "my-thing.service" → ["my-thing", "service"])
-        // Convert each segment from kebab-case to PascalCase, then join.
-        //
-        //   "seats-position-autofix.service"
-        //     → ["seats-position-autofix", "service"]
-        //     → ["SeatsPositionAutofix", "Service"]
-        //     → "SeatsPositionAutofixService"
-        const normalized = withoutExt
-          .split('.')
-          .map((segment) =>
-            segment
-              .split('-')
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(''),
-          )
-          .join('');
-
-        if (normalized.toLowerCase() !== exportName.toLowerCase()) {
+        if (!isValid(filename, exportName)) {
           context.report({
             node: programNode,
             messageId: 'mismatch',
