@@ -24,12 +24,12 @@ This makes it ideal for Angular, React, and other projects that follow the "one 
 ## Features
 
 - **Single-export focus** — only reports when a file has exactly one named export, skips everything else
-- **Angular-aware** — understands dot-separated naming (`my-thing.service.ts` matches `MyThingService`)
 - **Case-insensitive** — `myFunction` matches `my-function.ts` and `MyFunction` matches `my-function.ts`
 - **TypeScript-aware** — handles `export class`, `export function`, `export const`, `export interface`, `export type`, and re-exports (`export { Foo } from '...'`)
 - **ESLint 9 flat config** — native support, no `@eslint/compat` wrappers needed
 - **Zero dependencies** — only uses Node.js built-in `path` module
 - **Smart skipping** — automatically ignores `index.*`, `*.spec.*`, `*.test.*`, and `*.stories.*` files
+- **Angular-aware** — understands dot-separated naming (`my-thing.service.ts` matches `MyThingService`)
 
 ## Installation
 
@@ -51,7 +51,12 @@ export default [
       'filename-match-export': filenameMatchExport,
     },
     rules: {
-      'filename-match-export/match-named-export': 'error',
+      'filename-match-export/match-named-export': [
+        'error',
+        {
+          ignore: ['environment.development.ts', 'global.d.ts'],
+        },
+      ],
     },
   },
 ];
